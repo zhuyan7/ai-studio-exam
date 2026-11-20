@@ -3,10 +3,9 @@ import subprocess
 import sys
 import textwrap
 from app.config import get_settings
-from app.models import JudgeResult
 
 
-def judge_code(user_code: str, tests: list) -> JudgeResult:
+def judge_code(user_code: str, tests: list) -> dict:
     s = get_settings()
     test_json = json.dumps(tests, ensure_ascii=False)
     script = textwrap.dedent(f"""
@@ -32,15 +31,16 @@ def judge_code(user_code: str, tests: list) -> JudgeResult:
             capture_output=True, text=True, timeout=s.judge_timeout,
         )
     except subprocess.TimeoutExpired:
-        return JudgeResult(passed=False, error="运行超时（可能存在死循环）")
+        return {"passed": False, "detail": None, "error": "运行超时（可能存在死循环）"}
     if proc.returncode != 0:
-        return JudgeResult(passed=False, error=(proc.stderr.strip() or "运行出错")[:500])
+        return {"passed": False, "detail": None,
+                "error": (proc.stderr.strip() or "运行出错")[:500]}
     lines = proc.stdout.strip().splitlines()
     if not lines:
-        return JudgeResult(passed=False, error="无输出")
+        return {"passed": False, "detail": None, "error": "无输出"}
     try:
         results = json.loads(lines[-1])
     except Exception as e:
-        return JudgeResult(passed=False, error=f"解析结果失败: {e}", detail=proc.stdout[:500])
+        return {"passed": False, "detail": proc.stdout[:500], "error": f"解析结果失败: {e}"}
     all_pass = bool(results) and all(r.get("passed") for r in results)
-    return JudgeResult(passed=all_pass, detail=results)
+    return {"passed": all_pass, "detail": results, "error": None}

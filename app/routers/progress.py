@@ -1,11 +1,6 @@
-from fastapi import APIRouter
 from app.db import get_conn
-from app.models import MasteryOut
-
-router = APIRouter(prefix="/api/progress", tags=["学习进度"])
 
 
-@router.get("/mastery", response_model=list[MasteryOut], summary="各知识点掌握度")
 def get_mastery():
     conn = get_conn()
     try:
@@ -16,13 +11,12 @@ def get_mastery():
         ).fetchall()
     finally:
         conn.close()
-    return [MasteryOut(
-        kp_id=r["kp_id"], kp_name=r["name"], total=r["total"],
-        correct=r["correct"], wrong=r["wrong"], mastery_score=r["mastery_score"],
-    ) for r in rows]
+    return 200, [{
+        "kp_id": r["kp_id"], "kp_name": r["name"], "total": r["total"],
+        "correct": r["correct"], "wrong": r["wrong"], "mastery_score": r["mastery_score"],
+    } for r in rows]
 
 
-@router.get("/weak", response_model=list[MasteryOut], summary="薄弱知识点排序")
 def get_weak(top_n: int = 5):
     conn = get_conn()
     try:
@@ -34,13 +28,12 @@ def get_weak(top_n: int = 5):
         ).fetchall()
     finally:
         conn.close()
-    return [MasteryOut(
-        kp_id=r["kp_id"], kp_name=r["name"], total=r["total"],
-        correct=r["correct"], wrong=r["wrong"], mastery_score=r["mastery_score"],
-    ) for r in rows]
+    return 200, [{
+        "kp_id": r["kp_id"], "kp_name": r["name"], "total": r["total"],
+        "correct": r["correct"], "wrong": r["wrong"], "mastery_score": r["mastery_score"],
+    } for r in rows]
 
 
-@router.get("/summary", summary="总览统计")
 def get_summary():
     conn = get_conn()
     try:
@@ -53,7 +46,7 @@ def get_summary():
         p = conn.execute("SELECT COUNT(*) AS n FROM practice_records").fetchone()
     finally:
         conn.close()
-    return {
+    return 200, {
         "knowledge_covered": m["n"],
         "total_attempts": m["total"],
         "total_correct": m["correct"],

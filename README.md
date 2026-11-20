@@ -10,7 +10,7 @@
 
 ## 技术栈
 
-- **后端**：Python 3.11 + FastAPI + Uvicorn
+- **后端**：Python 3.11+ 标准库（`http.server` + `sqlite3` + `urllib`），**零第三方依赖**
 - **存储**：SQLite（开箱即用，无需额外服务）
 - **大模型**：DeepSeek（OpenAI 兼容接口），用于错题归类、练习生成、知识点问答
 - **判题**：subprocess 真实运行学生 Python 代码 + 测试用例比对
@@ -51,21 +51,18 @@ python-tutor-ai/
 
 ## 环境搭建与启动
 
-### 方式一：本地运行
+### 方式一：本地运行（零依赖，无需 pip install）
 
 ```bash
-# 1. 安装依赖（Python 3.11+）
-pip install -r requirements.txt
-
-# 2. 配置 DeepSeek API Key
-cp .env.example .env
+# 1. 配置 DeepSeek API Key
+cp .env.example .env        # Windows 用 copy .env.example .env
 #   编辑 .env，填入 DEEPSEEK_API_KEY=sk-你的真实key
 #   key 获取：https://platform.deepseek.com/
 
-# 3. 启动
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+# 2. 启动（Python 3.8+ 即可，无需安装任何依赖）
+python -m app.main
 
-# 4. 打开浏览器
+# 3. 打开浏览器
 #   http://localhost:8000
 ```
 
@@ -113,12 +110,12 @@ docker-compose down
 | GET | `/api/progress/summary` | 总览统计 |
 | POST | `/api/qa` | 知识点问答 |
 
-交互式文档：启动后访问 `http://localhost:8000/docs`（Swagger UI）。
+API 为纯 JSON 接口，可用 `curl` 或浏览器前端调用，详见 README 下方功能验证说明。
 
 ## 自检
 
 ```bash
-python -m pytest tests/ -v
+python tests/test_judge.py
 ```
 
 判题引擎测试不依赖网络与 API Key，验证核心判对错逻辑。

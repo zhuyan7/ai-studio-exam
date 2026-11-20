@@ -54,8 +54,16 @@ CREATE TABLE IF NOT EXISTS mastery (
 
 def get_conn() -> sqlite3.Connection:
     s = get_settings()
-    Path(s.db_path).parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(s.db_path)
+    db_path = Path(s.db_path)
+    if not db_path.is_absolute():
+        db_path = Path(__file__).resolve().parent.parent / db_path
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        conn = sqlite3.connect(str(db_path))
+    except sqlite3.OperationalError:
+        import tempfile
+        db_path = Path(tempfile.gettempdir()) / "python-tutor-ai.db"
+        conn = sqlite3.connect(str(db_path))
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn

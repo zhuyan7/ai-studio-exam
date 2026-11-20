@@ -1,24 +1,28 @@
 import json
 from datetime import datetime, timezone
-from fastapi import APIRouter, HTTPException
 from app.db import get_conn
 from app.llm import chat, LLMError
 from app.prompts import CLASSIFY_SYS, CLASSIFY_USER
-from app.models import WrongQuestionIn, WrongQuestionOut
-
-router = APIRouter(prefix="/api/wrong", tags=["错题本"])
 
 
-@router.post("", response_model=WrongQuestionOut, summary="录入错题并自动归类")
-async def add_wrong(data: WrongQuestionIn):
-    kp_id, kp_name, qtype = data.kp_id, None, data.qtype
+def add_wrong(body: dict):
+    stem = (body.get("stem") or "").strip()
+    if not stem:
+        return 400, {"detail": "题目内容不能为空"}
+    user_answer = body.get("user_answer")
+    error_reason = body.get("error_reason")
+    qid = body.get("qid")
+    kp_id = body.get("kp_id")
+    qtype = body.get("qtype")
+    kp_name = None
+
     if not kp_id or not qtype:
         try:
-            raw = await chat(
+            raw = chat(
                 CLASSIFY_USER.format(
-                    stem=data.stem,
-                    user_answer=data.user_answer or "(未作答)",
-                    error_reason=data.error_reason or "(未说明)",
+                    stem=stem,
+                    user_answer=user_answer or "(未作答)",
+                    error_reason=error_reason or "(未说明)",
                 ),
                 system_msg=CLASSIFY_SYS,
                 temperature=0.0,
@@ -37,7 +41,7 @@ async def add_wrong(data: WrongQuestionIn):
         cur = conn.execute(
             "INSERT INTO wrong_questions(qid,stem,user_answer,error_reason,kp_id,qtype,created_at) "
             "VALUES(?,?,?,?,?,?,?)",
-            (data.qid, data.stem, data.user_answer, data.error_reason, kp_id, qtype, now),
+            (qid, stem, user_answer, error_reason, kp_id, qtype, now),
         )
         wid = cur.lastrowid
         if kp_id:
@@ -56,14 +60,14 @@ async def add_wrong(data: WrongQuestionIn):
             "SELECT name FROM knowledge_points WHERE id=?", (kp_id,)).fetchone()
         kp_name = r["name"] if r else None
 
-    return WrongQuestionOut(
-        id=row["id"], qid=row["qid"], stem=row["stem"], user_answer=row["user_answer"],
-        error_reason=row["error_reason"], kp_id=row["kp_id"], kp_name=kp_name,
-        qtype=row["qtype"], created_at=row["created_at"],
-    )
+    return 200, {
+        "id": row["id"], "qid": row["qid"], "stem": row["stem"],
+        "user_answer": row["user_answer"], "error_reason": row["error_reason"],
+        "kp_id": row["kp_id"], "kp_name": kp_name,
+        "qtype": row["qtype"], "created_at": row["created_at"],
+    }
 
 
-@router.get("", response_model=list[WrongQuestionOut], summary="列出错题")
 def list_wrong(limit: int = 100):
     conn = get_conn()
     try:
@@ -74,8 +78,9 @@ def list_wrong(limit: int = 100):
         ).fetchall()
     finally:
         conn.close()
-    return [WrongQuestionOut(
-        id=r["id"], qid=r["qid"], stem=r["stem"], user_answer=r["user_answer"],
-        error_reason=r["error_reason"], kp_id=r["kp_id"], kp_name=r["kp_name"],
-        qtype=r["qtype"], created_at=r["created_at"],
-    ) for r in rows]
+    return 200, [{
+        "id": r["id"], "qid": r["qid"], "stem": r["stem"],
+        "user_answer": r["user_answer"], "error_reason": r["error_reason"],
+        "kp_id": r["kp_id"], "kp_name": r["kp_name"],
+        "qtype": r["qtype"], "created_at": r["created_at"],
+    } for r in rows]
