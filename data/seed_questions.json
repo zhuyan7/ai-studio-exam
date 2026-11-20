@@ -1,0 +1,98 @@
+[
+  {
+    "id": "q001",
+    "stem": "写一个函数 add(a, b) 返回两数之和。",
+    "qtype": "coding",
+    "kp_id": "functions",
+    "solution": "def add(a, b):\n    return a + b",
+    "tests": [
+      {"call": "add(1, 2)", "expected": 3},
+      {"call": "add(-1, 1)", "expected": 0},
+      {"call": "add(0, 0)", "expected": 0}
+    ]
+  },
+  {
+    "id": "q002",
+    "stem": "写一个函数 is_even(n) 判断 n 是否为偶数，返回布尔值。",
+    "qtype": "coding",
+    "kp_id": "control_flow",
+    "solution": "def is_even(n):\n    return n % 2 == 0",
+    "tests": [
+      {"call": "is_even(4)", "expected": true},
+      {"call": "is_even(7)", "expected": false},
+      {"call": "is_even(0)", "expected": true}
+    ]
+  },
+  {
+    "id": "q003",
+    "stem": "写一个函数 factorial(n) 返回 n 的阶乘（n>=0），要求用递归实现。",
+    "qtype": "coding",
+    "kp_id": "recursion",
+    "solution": "def factorial(n):\n    if n <= 1:\n        return 1\n    return n * factorial(n - 1)",
+    "tests": [
+      {"call": "factorial(0)", "expected": 1},
+      {"call": "factorial(1)", "expected": 1},
+      {"call": "factorial(5)", "expected": 120}
+    ]
+  },
+  {
+    "id": "q004",
+    "stem": "写一个函数 reverse_list(lst) 返回列表的逆序副本（不改原列表）。",
+    "qtype": "coding",
+    "kp_id": "lists",
+    "solution": "def reverse_list(lst):\n    return lst[::-1]",
+    "tests": [
+      {"call": "reverse_list([1,2,3])", "expected": [3,2,1]},
+      {"call": "reverse_list([])", "expected": []},
+      {"call": "reverse_list([5])", "expected": [5]}
+    ]
+  },
+  {
+    "id": "q005",
+    "stem": "写一个函数 count_vowels(s) 统计字符串中元音字母(a/e/i/o/u，不区分大小写)的个数。",
+    "qtype": "coding",
+    "kp_id": "strings",
+    "solution": "def count_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')",
+    "tests": [
+      {"call": "count_vowels('hello')", "expected": 2},
+      {"call": "count_vowels('AEIOU')", "expected": 5},
+      {"call": "count_vowels('xyz')", "expected": 0}
+    ]
+  },
+  {
+    "id": "q006",
+    "stem": "写一个函数 merge_dicts(d1, d2) 合并两个字典，d2 的键优先。",
+    "qtype": "coding",
+    "kp_id": "dicts",
+    "solution": "def merge_dicts(d1, d2):\n    return {**d1, **d2}",
+    "tests": [
+      {"call": "merge_dicts({'a':1},{'b':2})", "expected": {"a":1,"b":2}},
+      {"call": "merge_dicts({'a':1},{'a':2})", "expected": {"a":2}},
+      {"call": "merge_dicts({},{})", "expected": {}}
+    ]
+  },
+  {
+    "id": "q007",
+    "stem": "写一个函数 fib(n) 返回第 n 个斐波那契数（fib(0)=0, fib(1)=1），用循环实现。",
+    "qtype": "coding",
+    "kp_id": "loops",
+    "solution": "def fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a",
+    "tests": [
+      {"call": "fib(0)", "expected": 0},
+      {"call": "fib(1)", "expected": 1},
+      {"call": "fib(10)", "expected": 55}
+    ]
+  },
+  {
+    "id": "q008",
+    "stem": "写一个函数 safe_div(a, b) 返回 a/b，当 b 为 0 时返回 None（用异常处理）。",
+    "qtype": "coding",
+    "kp_id": "exceptions",
+    "solution": "def safe_div(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return None",
+    "tests": [
+      {"call": "safe_div(10, 2)", "expected": 5.0},
+      {"call": "safe_div(1, 0)", "expected": null},
+      {"call": "safe_div(7, 7)", "expected": 1.0}
+    ]
+  }
+]

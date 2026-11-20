@@ -1,0 +1,25 @@
+{
+  "subject": "Python 程序设计",
+  "points": [
+    {"id": "basics", "name": "基础语法", "parent": null, "desc": "变量、输入输出、注释、缩进"},
+    {"id": "data_types", "name": "数据类型", "parent": null, "desc": "int/float/str/bool 及类型转换"},
+    {"id": "operators", "name": "运算符", "parent": null, "desc": "算术、比较、逻辑、赋值运算符"},
+    {"id": "control_flow", "name": "条件分支", "parent": null, "desc": "if/elif/else 结构"},
+    {"id": "loops", "name": "循环", "parent": null, "desc": "for/while/break/continue"},
+    {"id": "strings", "name": "字符串", "parent": null, "desc": "切片、格式化、常用方法"},
+    {"id": "lists", "name": "列表", "parent": null, "desc": "增删改查、切片、推导式"},
+    {"id": "tuples", "name": "元组", "parent": null, "desc": "不可变序列、解包"},
+    {"id": "dicts", "name": "字典", "parent": null, "desc": "键值映射、遍历、方法"},
+    {"id": "sets", "name": "集合", "parent": null, "desc": "去重、交并差运算"},
+    {"id": "functions", "name": "函数", "parent": null, "desc": "定义、参数、返回值、作用域"},
+    {"id": "recursion", "name": "递归", "parent": "functions", "desc": "递归思想与边界条件"},
+    {"id": "file_io", "name": "文件读写", "parent": null, "desc": "open/with/读写模式"},
+    {"id": "exceptions", "name": "异常处理", "parent": null, "desc": "try/except/finally/raise"},
+    {"id": "classes", "name": "类与对象", "parent": null, "desc": "属性、方法、self、__init__"},
+    {"id": "inheritance", "name": "继承", "parent": "classes", "desc": "单继承、super、方法重写"},
+    {"id": "comprehensions", "name": "推导式", "parent": null, "desc": "列表/字典/集合推导式"},
+    {"id": "iterators", "name": "迭代器与生成器", "parent": null, "desc": "yield、可迭代协议"},
+    {"id": "decorators", "name": "装饰器", "parent": "functions", "desc": "函数装饰器、闭包应用"},
+    {"id": "modules", "name": "模块与包", "parent": null, "desc": "import、__name__、标准库"}
+  ]
+}

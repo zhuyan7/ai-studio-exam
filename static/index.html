@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python 学习辅导 AI 助教</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>🐍 Python 学习辅导 AI 助教</h1>
+    <p class="sub">错题归类 · 薄弱点练习 · 进度记录 · 知识点问答</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="wrong">② 错题本</button>
+    <button class="tab" data-tab="practice">③ 针对性练习</button>
+    <button class="tab" data-tab="progress">④ 学习进度</button>
+    <button class="tab" data-tab="qa">① 知识点问答</button>
+  </nav>
+
+  <main>
+    <!-- 错题本 -->
+    <section id="tab-wrong" class="panel active">
+      <h2>录入错题</h2>
+      <div class="form">
+        <textarea id="w-stem" rows="3" placeholder="题目内容，例如：写一个函数返回列表最大值"></textarea>
+        <textarea id="w-answer" rows="3" placeholder="你当时的作答（可选）"></textarea>
+        <input id="w-reason" placeholder="错误原因（可选）">
+        <button id="w-submit" class="btn">录入并自动归类</button>
+      </div>
+      <h2>错题列表</h2>
+      <div id="w-list" class="list"></div>
+    </section>
+
+    <!-- 练习 -->
+    <section id="tab-practice" class="panel">
+      <h2>针对性练习</h2>
+      <div class="form">
+        <button id="p-gen" class="btn">按薄弱点生成练习</button>
+        <button id="p-seed" class="btn btn-ghost">从题库随机取题</button>
+      </div>
+      <div id="p-area"></div>
+    </section>
+
+    <!-- 进度 -->
+    <section id="tab-progress" class="panel">
+      <h2>学习进度总览</h2>
+      <div id="pg-summary"></div>
+      <h2>各知识点掌握度</h2>
+      <div id="pg-mastery"></div>
+    </section>
+
+    <!-- 问答 -->
+    <section id="tab-qa" class="panel">
+      <h2>知识点问答（限定 Python）</h2>
+      <div class="form">
+        <input id="q-input" placeholder="问一个 Python 问题，如：列表和元组有什么区别？">
+        <button id="q-submit" class="btn">提问</button>
+      </div>
+      <div id="q-answer" class="answer"></div>
+    </section>
+  </main>
+
+  <footer>GDUF AI Studio 二轮考核 · 方向一选题B · DeepSeek 驱动</footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>
