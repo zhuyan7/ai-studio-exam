@@ -22,7 +22,7 @@ class Settings:
         self.deepseek_model = os.environ.get("DEEPSEEK_MODEL", "deepseek-chat")
 
         self.app_host = os.environ.get("APP_HOST", "0.0.0.0")
-        self.app_port = int(os.environ.get("APP_PORT", "8000"))
+        self.app_port = int(os.environ.get("PORT") or os.environ.get("APP_PORT") or "8000")
         self.db_path = os.environ.get("DB_PATH", "data/tutor.db")
 
         self.judge_timeout = int(os.environ.get("JUDGE_TIMEOUT", "5"))
