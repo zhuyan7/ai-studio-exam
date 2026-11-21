@@ -6,7 +6,7 @@ def _load_dotenv() -> None:
     p = Path(__file__).resolve().parent.parent / ".env"
     if not p.exists():
         return
-    for line in p.read_text(encoding="utf-8").splitlines():
+    for line in p.read_text(encoding="utf-8-sig").splitlines():
         line = line.strip()
         if not line or line.startswith("#") or "=" not in line:
             continue
