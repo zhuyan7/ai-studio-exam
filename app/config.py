@@ -11,22 +11,21 @@ def _load_dotenv() -> None:
         if not line or line.startswith("#") or "=" not in line:
             continue
         k, v = line.split("=", 1)
-        os.environ.setdefault(k.strip(), v.strip())
-
-
-_load_dotenv()
+        os.environ[k.strip()] = v.strip()
 
 
 class Settings:
-    deepseek_api_key: str = os.environ.get("DEEPSEEK_API_KEY", "")
-    deepseek_base_url: str = os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")
-    deepseek_model: str = os.environ.get("DEEPSEEK_MODEL", "deepseek-chat")
+    def __init__(self):
+        _load_dotenv()
+        self.deepseek_api_key = os.environ.get("DEEPSEEK_API_KEY", "")
+        self.deepseek_base_url = os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")
+        self.deepseek_model = os.environ.get("DEEPSEEK_MODEL", "deepseek-chat")
 
-    app_host: str = os.environ.get("APP_HOST", "0.0.0.0")
-    app_port: int = int(os.environ.get("APP_PORT", "8000"))
-    db_path: str = os.environ.get("DB_PATH", "data/tutor.db")
+        self.app_host = os.environ.get("APP_HOST", "0.0.0.0")
+        self.app_port = int(os.environ.get("APP_PORT", "8000"))
+        self.db_path = os.environ.get("DB_PATH", "data/tutor.db")
 
-    judge_timeout: int = int(os.environ.get("JUDGE_TIMEOUT", "5"))
+        self.judge_timeout = int(os.environ.get("JUDGE_TIMEOUT", "5"))
 
 
 def get_settings() -> Settings:

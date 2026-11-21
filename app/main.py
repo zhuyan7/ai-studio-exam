@@ -119,7 +119,13 @@ def main():
     server = create_server()
     s = get_settings()
     print(f"Python 学习辅导 AI 助教已启动：http://localhost:{s.app_port}")
-    print(f"API 文档见 README，Swagger 已移除（零依赖版本）")
+    key = s.deepseek_api_key
+    if not key or key.startswith("sk-your") or "填" in key:
+        print("⚠️ 警告：DEEPSEEK_API_KEY 未配置或仍是占位符！")
+        print("   LLM 功能（错题归类/生成练习/问答）不可用，判题和题库取题仍可用。")
+        print("   请编辑 .env 填入真实 key，改完无需重启服务（自动生效）。")
+    else:
+        print(f"✅ API Key 已配置（长度 {len(key)}），LLM 功能可用。")
     print(f"按 Ctrl+C 停止")
     try:
         server.serve_forever()
