@@ -1,3 +1,4 @@
+window.addEventListener('error', e => document.body.insertAdjacentHTML('afterbegin', '<div style="color:red;background:yellow;padding:10px;font-size:14px;position:fixed;top:0;left:0;right:0;z-index:9999">JS错误: ' + e.message + ' (行:' + e.lineno + ')</div>'));
 const $ = (s) => document.querySelector(s);
 const api = (p, opt) => fetch(p, opt).then(r => r.ok ? r.json() : r.json().then(e => Promise.reject(e)));
 
